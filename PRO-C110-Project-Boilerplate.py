@@ -4,10 +4,10 @@ import cv2
 # Para processar o array de imagens
 import numpy as np
 
-
 # importe os módulos tensorflow e carregue o modelo
+import tensorflow as tf
 
-
+model = tf.keras.models.load_model('keras_model.h5')
 
 # Anexando a câmera indexada como 0, com o software da aplicação
 camera = cv2.VideoCapture(0)
@@ -23,23 +23,26 @@ while True:
 
 		# Inverta o quadro
 		frame = cv2.flip(frame , 1)
-		
-		
 				
 		# Redimensione o quadro
+		frame = cv2.resize(frame(224,224))
 
 		# Expanda a dimensão do array junto com o eixo 0
+		test_image = np. expand_dims(test_image, axis=0)
 
 		# Normalize para facilitar o processamento
+		normalised_image = test_image/255.0
 
 		# Obtenha previsões do modelo
-		
+		prediction = model.predict(normalised_image)
+    
+		print("Previsão: ", prediction)
 		
 		# Exibindo os quadros capturados
 		cv2.imshow('feed' , frame)
 
 		# Aguardando 1ms
-		code = cv2.waitKey(1)
+		code = cv2.waitKey(0)
 		
 		# Se a barra de espaço foi pressionada, interrompa o loop
 		if code == 32:
